@@ -7,10 +7,10 @@ import {
   NextSSRInMemoryCache,
   SSRMultipartLink,
 } from "@apollo/experimental-nextjs-app-support/ssr";
-import { setContext } from '@apollo/client/link/context';
+import { setContext } from "@apollo/client/link/context";
 import { loadErrorMessages, loadDevMessages } from "@apollo/client/dev";
 import { onError } from "@apollo/client/link/error";
-import Config from '@/config';
+import Config from "@/config";
 
 if (Config.development()) {
   loadDevMessages();
@@ -25,16 +25,17 @@ function makeClient() {
       headers: {
         ...headers,
         authorization: token ? `Bearer ${token}` : "",
-      }
-    }
+      },
+    };
   });
 
   const errorLink = onError(({ graphQLErrors, networkError }) => {
+    console.log(graphQLErrors);
     if (graphQLErrors) {
       graphQLErrors.forEach((error) => {
         if (Config.development())
           console.log(`[GraphQL error]: ${error.message}`);
-        localStorage.removeItem("token")
+        localStorage.removeItem("token");
       });
     }
 
@@ -43,14 +44,14 @@ function makeClient() {
     }
   });
 
-  const httpLink = new HttpLink({ 
-    uri: Config.graphql.endpoint 
+  const httpLink = new HttpLink({
+    uri: Config.graphql.endpoint,
   });
 
   return new NextSSRApolloClient({
     cache: new NextSSRInMemoryCache(),
     credentials: "includes",
-    link: from([authLink, errorLink, httpLink])
+    link: from([authLink, errorLink, httpLink]),
   });
 }
 

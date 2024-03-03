@@ -28,16 +28,13 @@ export default function Page({
     },
   });
 
-  if (loading) 
-    return <Loader />;
+  if (loading) return <Loader />;
 
   return (
     <div className="flex h-screen items-stretch">
-      <Sidebar
-        notebook={data.notebook}
-        currentPageId={params.page_id}
-      />
+      <Sidebar notebook={data?.notebook} currentPageId={params.page_id} />
       <div className="flex-[4]" />
+      <div>aaaaaaaaaaaaaaaaaaaaaaa</div>
     </div>
   );
 }
